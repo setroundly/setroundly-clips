@@ -11,6 +11,14 @@ registry.csv の `song` 列。`python make_registry.py` で再生成。
 | b12_s5_emo.mp4 | CO2_utauyo | emo | no | 全部なくなっても  残ったサビ。 |
 | b13_s5_song.mp4 | CO2_utauyo | song | no | この声、 聴いてほしい。 |
 
+## tomorrow
+
+| file | section | style | intro | hook |
+|------|---------|-------|-------|------|
+| b14_s6_emo.mp4 | LastSong_kasa | emo | no | 眠れない夜に  こぼした涙。 |
+| b15_s6_viral.mp4 | LastSong_kasa | viral | no | この歌詞、 やばい。 |
+| b16_s6_blackintro.mp4 | LastSong_kasa | song | yes | 悲しくない ことを  悲しまないで。 |
+
 ## ハニーハニー
 
 | file | section | style | intro | hook |
@@ -32,14 +40,6 @@ registry.csv の `song` 列。`python make_registry.py` で再生成。
 | b20_s1_blackintro.mp4 | HH_1stChorus | song | yes | 逃げ場所が 欲しかった頃。 |
 | new_blackintro.mp4 | HH_Aitai | viral | yes | 愛だと 思ってた。  たぶん 違った。 |
 | new_overlay.mp4 | HH_Aitai | viral | no | 愛だと 思ってた。  たぶん 違った。 |
-
-## 透明な傘
-
-| file | section | style | intro | hook |
-|------|---------|-------|-------|------|
-| b14_s6_emo.mp4 | LastSong_kasa | emo | no | 眠れない夜に  こぼした涙。 |
-| b15_s6_viral.mp4 | LastSong_kasa | viral | no | この歌詞、 やばい。 |
-| b16_s6_blackintro.mp4 | LastSong_kasa | song | yes | 悲しくない ことを  悲しまないで。 |
 
 ## MC
 

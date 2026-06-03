@@ -14,7 +14,7 @@ SECTION_TO_SONG = {
     "HH_2ndChorus_hari": "ハニーハニー",
     "HH_Aitai": "ハニーハニー",
     "CO2_utauyo": "CO2",
-    "LastSong_kasa": "透明な傘",
+    "LastSong_kasa": "tomorrow",  # 歌詞フックは「透明な傘」
     "MC_guitar": "MC",
     "MC_blue": "MC",
     "MC_bike/nostalgia": "MC",
