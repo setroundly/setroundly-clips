@@ -82,7 +82,8 @@ def analyze():
     rows.sort(key=lambda r: r["score"], reverse=True)
     print("\n=== 個別ランキング（合成スコア／維持率重視）===")
     for r in rows:
-        print(f"  {r['score']:5.1f}  {r['file']:22} {r['section']:18} {r['style']:5} "
+        song = r.get("song", "?")
+        print(f"  {r['score']:5.1f}  {r['file']:22} {song:8} {r['section']:18} {r['style']:5} "
               f"intro={r['intro_black']:3} {r['accent']:5} | full={r.get('full_watch_rate')}% save={r.get('save_rate') and round(r['save_rate'],1)}%")
 
     def rank_by(dim):
@@ -93,18 +94,19 @@ def analyze():
         out.sort(key=lambda x: x[1], reverse=True)
         return out
 
-    for dim in ["section", "style", "accent", "intro_black"]:
+    for dim in ["song", "section", "style", "accent", "intro_black"]:
         print(f"\n=== {dim} 別 平均スコア ===")
         for k, avg, n in rank_by(dim):
             print(f"  {avg:5.1f}  {k}  (n={n})")
 
     # recommend next batch
+    top_song = rank_by("song")[0][0] if rows[0].get("song") else "?"
     top_section = rank_by("section")[0][0]
     top_style = rank_by("style")[0][0]
     top_accent = rank_by("accent")[0][0]
     top_intro = rank_by("intro_black")[0][0]
     print("\n=== 次バッチの推奨配合 ===")
-    print(f"  主軸：区間={top_section} / スタイル={top_style} / アクセント={top_accent} / 黒イントロ={top_intro}")
+    print(f"  主軸：曲={top_song} / 区間={top_section} / スタイル={top_style} / アクセント={top_accent} / 黒イントロ={top_intro}")
     print(f"  → この組合せを多めに。下位の区間/スタイルは本数を減らすか、勝ちフックで作り直し。")
     print(f"  勝ちフック上位3：")
     for r in rows[:3]:
