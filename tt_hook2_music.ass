@@ -1,0 +1,20 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Pop,Yu Gothic UI,84,&H00FFFFFF,&H0000F0FF,&H00202020,&H96000000,-1,0,0,0,100,100,1,0,1,6,3,2,40,40,470,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, Effect, Text
+Dialogue: 0,0:00:01.04,0:00:01.83,Pop,,0,0,,音楽
+Dialogue: 0,0:00:02.24,0:00:03.39,Pop,,0,0,,大人になるとなんか聞けなく
+Dialogue: 0,0:00:03.40,0:00:04.65,Pop,,0,0,,なるじゃないですか
+Dialogue: 0,0:00:04.78,0:00:05.45,Pop,,0,0,,わかんないですか
+Dialogue: 0,0:00:05.84,0:00:06.85,Pop,,0,0,,大好きですか
+Dialogue: 0,0:00:08.72,0:00:10.41,Pop,,0,0,,昔みたいな純粋な気持ちで聞
+Dialogue: 0,0:00:10.42,0:00:11.26,Pop,,0,0,,けなくなるじゃないですか

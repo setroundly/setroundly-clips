@@ -1,0 +1,23 @@
+# Outputs (regenerate with build_*.py)
+*.mp4
+*.png
+*.wav
+audio.wav
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets / local env
+.env
+.env.*
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Optional: large caches (uncomment if repo feels heavy)
+# words*.json
+# transcript_small.json

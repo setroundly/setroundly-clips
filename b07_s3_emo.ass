@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Lyric,Yu Gothic UI,98,&H00FFFFFF,&H00FFFFFF,&H00141414,&HB4000000,-1,0,0,0,100,100,1,0,1,4,2,2,40,40,230,1
+Style: Hook,Yu Gothic UI,150,&H00FFFFFF,&H00FFFFFF,&H00141414,&H00000000,-1,0,0,0,100,100,2,0,1,6,5,5,12,12,0,1
+Style: Scrim,Arial,1,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Bug,Yu Gothic UI,58,&H00FFFFFF,&H00FFFFFF,&H00141414,&H78000000,-1,0,0,0,100,100,2,0,1,2,1,2,60,60,130,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.20,Scrim,,0,0,,{\p1\an7\pos(0,0)\1c&H000000&\1a&H9E&\bord0\shad0}m 0 0 l 1080 0 1080 1920 0 1920{\p0}
+Dialogue: 2,0:00:00.10,0:00:04.20,Hook,,0,0,,{\\c&H7AC5F0&}見せかけ{\\c&HFFFFFF&}の\N優しさは\N\Nいらなかった。
+Dialogue: 0,0:00:05.98,0:00:08.54,Lyric,,0,0,,優しさなんて
+Dialogue: 0,0:00:08.54,0:00:11.66,Lyric,,0,0,,本当に{\\c&H7AC5F0&}要らない{\\c&HFFFFFF&}
+Dialogue: 0,0:00:11.66,0:00:15.34,Lyric,,0,0,,あれこれと映し出す
+Dialogue: 2,0:00:12.50,0:00:15.40,Bug,,0,0,,♪ ハニーハニー / SETROUNDLY

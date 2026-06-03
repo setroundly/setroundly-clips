@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Lyric,Yu Gothic UI,98,&H00FFFFFF,&H00FFFFFF,&H00141414,&HB4000000,-1,0,0,0,100,100,1,0,1,4,2,2,40,40,230,1
+Style: Hook,Yu Gothic UI,150,&H00FFFFFF,&H00FFFFFF,&H00141414,&H00000000,-1,0,0,0,100,100,2,0,1,6,5,5,12,12,0,1
+Style: Scrim,Arial,1,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Bug,Yu Gothic UI,58,&H00FFFFFF,&H00FFFFFF,&H00141414,&H78000000,-1,0,0,0,100,100,2,0,1,2,1,2,60,60,130,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.20,Scrim,,0,0,,{\p1\an7\pos(0,0)\1c&H000000&\1a&H9E&\bord0\shad0}m 0 0 l 1080 0 1080 1920 0 1920{\p0}
+Dialogue: 2,0:00:00.10,0:00:04.20,Hook,,0,0,,{\\c&H2EB0FF&}会いたい{\\c&HFFFFFF&}。\N\N心も、\N身体も。
+Dialogue: 0,0:00:05.18,0:00:07.76,Lyric,,0,0,,過去には勝てないまま
+Dialogue: 0,0:00:08.02,0:00:11.38,Lyric,,0,0,,{\\c&H2EB0FF&}会いたい{\\c&HFFFFFF&}、心も
+Dialogue: 0,0:00:11.38,0:00:13.38,Lyric,,0,0,,身体も
+Dialogue: 2,0:00:12.20,0:00:16.88,Bug,,0,0,,保存して、夜にもう一回。\N— SETROUNDLY
+Dialogue: 0,0:00:13.92,0:00:16.88,Lyric,,0,0,,あの時と同じでも

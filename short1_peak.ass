@@ -1,0 +1,27 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Yu Gothic UI,80,&H00FFFFFF,&H000000FF,&H00101010,&H96000000,-1,0,0,0,100,100,1,0,1,6,3,2,60,60,360,1
+Style: Telop,Yu Gothic UI,62,&H0000FAFF,&H000000FF,&H00101010,&H00101010,-1,0,0,0,100,100,0,0,3,16,0,8,70,70,150,1
+Style: End,Yu Gothic UI,116,&H00FFFFFF,&H000000FF,&H00101010,&H96000000,-1,0,0,0,100,100,2,0,1,7,4,5,80,80,0,1
+Style: Sub,Yu Gothic UI,52,&H00FFFFFF,&H000000FF,&H00101010,&H96000000,-1,0,0,0,100,100,0,0,1,4,2,2,60,60,150,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, Effect, Text
+Dialogue: 0,0:00:00.02,0:00:02.60,Cap,,0,0,,歌うよ 歌うよ 歌うよ
+Dialogue: 1,0:00:00.20,0:00:03.60,Telop,,0,0,,無名だけど、曲は本気です
+Dialogue: 1,0:00:03.80,0:00:07.40,Telop,,0,0,,ライブハウスで見つけたバンド
+Dialogue: 0,0:00:04.90,0:00:10.90,Cap,,0,0,,このまま…
+Dialogue: 1,0:00:08.00,0:00:11.80,Telop,,0,0,,全部ひとり、弾き語りです
+Dialogue: 0,0:00:11.06,0:00:15.18,Cap,,0,0,,このまま…
+Dialogue: 0,0:00:15.18,0:00:17.02,Cap,,0,0,,貰ったこと
+Dialogue: 0,0:00:17.02,0:00:21.30,Cap,,0,0,,忘れないように
+Dialogue: 0,0:00:22.18,0:00:23.54,Cap,,0,0,,ありがとう！
+Dialogue: 0,0:00:28.14,0:00:29.46,Cap,,0,0,,「CO2」という曲です
+Dialogue: 2,0:00:28.20,0:00:30.70,End,,0,0,,SETROUNDLY
