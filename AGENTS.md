@@ -1,19 +1,23 @@
 # SETROUNDLY_clips
 
 TikTok short clips for SETROUNDLY (live `2026-05-29 SETROUNDLY.mp4`).  
-GitHub: `setroundly/setroundly-clips` — **not iam-pro or other projects.**
+GitHub: `setroundly/setroundly-clips` — **not iam-pro. 運用はこのリポジトリ一本。**
+
+## Weekly automation (primary)
+
+- **唯一の手順書**: `weekly_growth_prompt.md`（Cloud Automation もこれを読む）
+- Pipeline: TikTok Studio (browser) → `update_results.py` → `run_weekly.py` → competitor research → `build_batch.py` / `build_mc.py` → `reports/`
+- Prefill: `.cursor/weekly-automation-prefill.json`
 
 ## Cursor Cloud
 
-- Work in the repo root (`SETROUNDLY_clips`).
-- Source concert file: not in Git. On cloud, upload once to the machine or set `SETROUNDLY_SRC` to its path.
-- `ffmpeg` is on PATH after `install` in `.cursor/environment.json`.
-- Weekly loop: read `weekly_growth_prompt.md`, write reports under `reports/`.
-- KPI priority: full watch rate > 2s reach > saves > comments.
-- One unique caption per TikTok post.
+- Repo root only. Branch: `main`.
+- Source video: not in Git; set `SETROUNDLY_SRC` or upload on Cloud.
+- `ffmpeg` on PATH after `install` in `.cursor/environment.json`.
+- KPI: full watch rate > 2s reach > saves > comments.
 
 ## Local (Windows)
 
-- Source video default: `../2026-05-29 SETROUNDLY.mp4` (Desktop, next to this folder).
-- `python analyze_results.py` after filling `results.csv`.
-- `python build_batch.py` / `python build_mc.py` to render (outputs `*.mp4` in repo root, gitignored).
+- Source: `../2026-05-29 SETROUNDLY.mp4`
+- `python run_weekly.py --merge` after `update_results.py`
+- `python build_batch.py` / `python build_mc.py` → `*.mp4` (gitignored)

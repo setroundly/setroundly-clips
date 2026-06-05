@@ -1,0 +1,28 @@
+{
+  "name": "SETROUNDLY 週次グロース",
+  "description": "金曜21時(JST): TikTok集計→分析→競合調査→次週クリップ→週次レポート。main ブランチの weekly_growth_prompt.md のみ参照。",
+  "workflow": {
+    "triggers": [
+      {
+        "cron": {
+          "cron": "0 12 * * 5"
+        }
+      }
+    ],
+    "actions": [],
+    "prompts": [
+      {
+        "prompt": "SETROUNDLY_clips の週次グロース分析を実行してください。\n\nまずリポジトリルートの weekly_growth_prompt.md を全文読み、その手順に従ってください。\n\n優先順位：\n1. TikTok Studio の公開済み投稿KPIを確認（IDEブラウザ必須。ログイン必要ならユーザーに確認して停止）\n2. tiktok_posts.csv と突合\n3. update_results.py で results.csv を更新\n4. python run_weekly.py --merge を実行\n5. reports/ に週次レポートを作成\n6. results が十分なら build_batch.py / build_mc.py を更新して、次週用の投稿案を 5〜10本作成\n7. 最後に変更内容を要約してください\n\n注意：\n- 他プロジェクトには触らない\n- main ブランチに存在しないファイルは参照しない（weekly_automation_prompt.md や AUTOMATION_SETUP.md は使わない）\n- git commit はユーザーが明示した場合のみ行う"
+      }
+    ],
+    "model": "",
+    "gitConfig": {
+      "repo": "setroundly/setroundly-clips",
+      "branch": "main"
+    },
+    "agentOptions": {
+      "skipInstall": false
+    },
+    "memoryEnabled": true
+  }
+}

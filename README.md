@@ -9,34 +9,28 @@ SETROUNDLY 用 TikTok 縦動画の生成・分析専用フォルダ（**iam-pro 
 | このフォルダ | スクリプト・CSV・レポート・生成 mp4 |
 | ひとつ上の Desktop | 元ネタ `2026-05-29 SETROUNDLY.mp4`（Git に入れない） |
 
+## 週次フル自動化（金曜 21:00）
+
+**手順の本体**: [`weekly_growth_prompt.md`](weekly_growth_prompt.md)  
+Cloud 設定メモ: [`AUTOMATION_SETUP.md`](AUTOMATION_SETUP.md)
+
 ## よく使うコマンド
 
 ```powershell
 cd $env:USERPROFILE\Desktop\SETROUNDLY_clips
+python run_weekly.py --merge
+python update_results.py --merge registry
 python analyze_results.py
 python build_batch.py
 python make_registry.py
 ```
 
-## GitHub に上げる（初回だけ）
+## GitHub
 
-リポジトリ: **[setroundly/setroundly-clips](https://github.com/setroundly/setroundly-clips)**（`iam-pro` とは別）
+リポジトリ: **[setroundly/setroundly-clips](https://github.com/setroundly/setroundly-clips)**
 
-初回 push（まだなら）:
-
-```powershell
-cd $env:USERPROFILE\Desktop\SETROUNDLY_clips
-git add .
-git commit -m "SETROUNDLY clips: scripts, registry, weekly workflow"
-git branch -M main
-git remote add origin https://github.com/setroundly/setroundly-clips.git
-git push -u origin main
-```
-
-（`remote` は既にある場合は `git remote set-url origin ...`）
-
-[Cloud Agents](https://cursor.com/dashboard?tab=cloud-agents) → **New** → `setroundly/setroundly-clips` を選択  
-Automations → Runtime **Cloud** → 同じリポジトリ
+[Cloud Agents](https://cursor.com/dashboard?tab=cloud-agents) → `setroundly/setroundly-clips` / **main**  
+Automations → Runtime **Cloud** → 指示は `weekly_growth_prompt.md`
 
 ## 環境変数（任意）
 
