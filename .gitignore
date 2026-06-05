@@ -10,6 +10,9 @@ __pycache__/
 .venv/
 venv/
 
+# TikTok metrics (local / automation)
+results.csv
+
 # Secrets / local env
 .env
 .env.*
