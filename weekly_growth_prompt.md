@@ -11,7 +11,7 @@
 1. IDE内ブラウザで TikTok Studio にアクセス（ログインが必要ならユーザーに依頼）
 2. Posts / Analytics から公開済み投稿の数値を取得
 3. `tiktok_posts.csv`（video_id ↔ ローカルファイル）と突合
-4. `results.csv` を更新（列: file, posted_date, views, sec2_rate, avg_watch_s, full_watch_rate, likes, comments, saves, shares, followers_gained）
+4. `results.csv` を更新（`python update_results.py` — 列: date, video_id, title, views, likes, comments, shares, saves, avg_watch_time, full_watch_rate, two_sec_retention, five_sec_retention, retention_notes）。詳細は `automation_prompt.md`
 5. 予約投稿のみで数値0の場合は「公開待ち」と明記し、分析はスキップ可
 
 ## Step 2: 自社データ分析
