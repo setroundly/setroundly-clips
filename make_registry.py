@@ -7,6 +7,28 @@ from build_patterns import GOLD, CREAM, AMBER
 
 ACCENT_NAME = {GOLD: "gold", CREAM: "cream", AMBER: "amber"}
 
+# ライブ区間コード (section) → 曲名（TikTok 仕訳・分析用）
+SECTION_TO_SONG = {
+    "HH_1stChorus": "ハニーハニー",
+    "HH_Misekake": "ハニーハニー",
+    "HH_2ndChorus_hari": "ハニーハニー",
+    "HH_Aitai": "ハニーハニー",
+    "CO2_utauyo": "CO2",
+    "LastSong_kasa": "tomorrow",  # 歌詞フックは「透明な傘」
+    "MC_guitar": "MC",
+    "MC_blue": "MC",
+    "MC_bike/nostalgia": "MC",
+}
+
+
+def song_of(section: str) -> str:
+    if section in SECTION_TO_SONG:
+        return SECTION_TO_SONG[section]
+    if section.startswith("other_"):
+        return "（未分類）"
+    return section
+
+
 def style_of(grade):
     if "vignette" in grade: return "emo"
     if "gamma" in grade:    return "song"
@@ -36,9 +58,11 @@ for mod in (build_patterns, build_batch, build_mc):
         seg0 = sp["segments"][0][0]
         intro = sp.get("intro")
         hook = clean(intro[1]) if intro else (clean(sp["hooks"][0][2]) if sp.get("hooks") else "")
+        sec = section_of(seg0)
         rows.append({
             "file": sp["name"] + ".mp4",
-            "section": section_of(seg0),
+            "song": song_of(sec),
+            "section": sec,
             "style": style_of(sp.get("grade", "")),
             "intro_black": "yes" if intro else "no",
             "accent": ACCENT_NAME.get(sp.get("accent", ""), "?"),
@@ -46,11 +70,32 @@ for mod in (build_patterns, build_batch, build_mc):
             "hook": hook,
         })
 
-rows.sort(key=lambda r: r["file"])
+rows.sort(key=lambda r: (r["song"], r["file"]))
+
+FIELDS = ["file", "song", "section", "style", "intro_black", "accent", "n_cuts", "hook"]
 with open("registry.csv", "w", encoding="utf-8-sig", newline="") as f:
-    w = csv.DictWriter(f, fieldnames=["file", "section", "style", "intro_black", "accent", "n_cuts", "hook"])
+    w = csv.DictWriter(f, fieldnames=FIELDS)
     w.writeheader()
     w.writerows(rows)
 print(f"wrote registry.csv ({len(rows)} videos)")
+
+REPORTS = __import__("pathlib").Path(__file__).resolve().parent / "reports"
+REPORTS.mkdir(exist_ok=True)
+by_song = {}
 for r in rows:
-    print(f"  {r['file']:24} {r['section']:20} {r['style']:6} intro={r['intro_black']:3} {r['accent']:5} | {r['hook']}")
+    by_song.setdefault(r["song"], []).append(r)
+lines = ["# 動画一覧（曲名仕訳）\n", "registry.csv の `song` 列。`python make_registry.py` で再生成。\n"]
+for song in sorted(by_song.keys(), key=lambda s: (s == "MC", s)):
+    lines.append(f"\n## {song}\n")
+    lines.append("| file | section | style | intro | hook |")
+    lines.append("|------|---------|-------|-------|------|")
+    for r in by_song[song]:
+        hook = r["hook"].replace("|", "\\|")[:40]
+        lines.append(
+            f"| {r['file']} | {r['section']} | {r['style']} | {r['intro_black']} | {hook} |"
+        )
+(REPORTS / "videos_by_song.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+print(f"wrote {REPORTS / 'videos_by_song.md'}")
+
+for r in rows:
+    print(f"  {r['song']:8} {r['file']:24} {r['section']:20} {r['style']:6} intro={r['intro_black']:3} | {r['hook'][:36]}")
