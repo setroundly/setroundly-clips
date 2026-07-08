@@ -1,88 +1,214 @@
-"""Update results.csv from TikTok Studio scrape (JSON) or merge registry rows.
+#!/usr/bin/env python3
+"""Append or update TikTok Studio insights in results.csv.
 
 Usage:
   python update_results.py --init
-  python update_results.py --merge registry   # ensure one row per registry file
-  python update_results.py metrics.json       # [{"file":"b01_s1_emo.mp4","views":100,...}, ...]
-  python update_results.py --stdin            # read JSON array from stdin
+      Create results.csv / results_template.csv with headers (and rows from tiktok_posts.csv).
 
-JSON fields per row: file (required), posted_date, and any METRICS column from analyze_results.py.
+  python update_results.py --video-id 7645966686616702224 --views 1200 --two-sec-retention 48%
+      Append or update one row (empty / omitted fields are OK).
+
+  python update_results.py --json row.json
+      One object or a list of objects with RESULT_FIELDS keys.
+
+  python update_results.py --import-csv studio_export.csv
+      Import rows when column names match (extra columns ignored).
+
+  python update_results.py --stdin
+      Read JSON lines from stdin (one object per line).
 """
+from __future__ import annotations
+
+import argparse
 import csv
 import json
-import os
 import sys
+from pathlib import Path
 
-from analyze_results import METRICS, REG, RES, TPL, init_template, load_csv
+from results_schema import EMPTY_MARKERS, POSTS, RES, RESULT_FIELDS, TPL
 
-FIELDS = ["file", "posted_date"] + METRICS
+ROOT = Path(__file__).resolve().parent
+
+# CLI / import aliases → canonical column names
+FIELD_ALIASES = {
+    "posted_date": "date",
+    "caption": "title",
+    "sec2_rate": "two_sec_retention",
+    "sec2": "two_sec_retention",
+    "2秒維持率": "two_sec_retention",
+    "5秒維持率": "five_sec_retention",
+    "avg_watch_s": "avg_watch_time",
+    "平均視聴時間": "avg_watch_time",
+    "完走率": "full_watch_rate",
+    "フル視聴率": "full_watch_rate",
+}
 
 
-def ensure_results():
-    if os.path.exists(RES):
-        return load_csv(RES)
-    if os.path.exists(TPL):
-        rows = load_csv(TPL)
-        return rows
-    init_template()
-    return load_csv(TPL)
+def norm_text(v) -> str:
+    if v is None:
+        return ""
+    s = str(v).strip()
+    return "" if s in EMPTY_MARKERS else s
 
 
-def write_results(rows):
-    with open(RES, "w", encoding="utf-8-sig", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=FIELDS, extrasaction="ignore")
+def load_csv(path: Path) -> list[dict]:
+    if not path.is_file():
+        return []
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def save_csv(path: Path, rows: list[dict]) -> None:
+    with path.open("w", encoding="utf-8-sig", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=RESULT_FIELDS, extrasaction="ignore")
         w.writeheader()
         for r in rows:
-            w.writerow({k: r.get(k, "") for k in FIELDS})
-    print(f"updated {RES} ({len(rows)} rows)")
+            w.writerow({k: norm_text(r.get(k, "")) for k in RESULT_FIELDS})
 
 
-def merge_registry():
-    reg = load_csv(REG)
-    by_file = {r["file"]: r for r in ensure_results()}
-    for r in reg:
-        f = r["file"]
-        if f not in by_file:
-            by_file[f] = {"file": f, "posted_date": ""}
-            for m in METRICS:
-                by_file[f][m] = ""
-    write_results(list(by_file.values()))
+def blank_row() -> dict:
+    return {k: "" for k in RESULT_FIELDS}
 
 
-def apply_metrics(updates):
-    by_file = {r["file"]: dict(r) for r in ensure_results()}
-    n = 0
-    for u in updates:
-        f = u.get("file")
-        if not f:
-            continue
-        row = by_file.setdefault(f, {"file": f, "posted_date": ""})
-        for k in FIELDS:
-            if k in u and u[k] not in (None, ""):
-                row[k] = u[k]
-        n += 1
-    write_results(list(by_file.values()))
-    print(f"applied metrics to {n} file(s)")
+def posts_seed_rows() -> list[dict]:
+    rows = []
+    for p in load_csv(ROOT / POSTS):
+        row = blank_row()
+        row["date"] = norm_text(p.get("scheduled_date", ""))
+        row["video_id"] = norm_text(p.get("video_id", ""))
+        row["title"] = norm_text(p.get("caption", ""))
+        rows.append(row)
+    return rows
+
+
+def init_files() -> None:
+    rows = posts_seed_rows()
+    save_csv(ROOT / TPL, rows)
+    save_csv(ROOT / RES, [])
+    print(f"created {TPL} ({len(rows)} rows from {POSTS})")
+    print(f"reset {RES} (header only). Use --video-id ... to append.")
+
+
+def canonicalize(raw: dict) -> dict:
+    out = blank_row()
+    for k, v in raw.items():
+        key = FIELD_ALIASES.get(k, k)
+        if key in RESULT_FIELDS:
+            out[key] = norm_text(v)
+    if not out["title"] and out["video_id"]:
+        for p in load_csv(ROOT / POSTS):
+            if norm_text(p.get("video_id")) == out["video_id"]:
+                out["title"] = norm_text(p.get("caption", ""))
+                break
+    return out
+
+
+def upsert(rows: list[dict], incoming: dict) -> list[dict]:
+    row = canonicalize(incoming)
+    vid = row["video_id"]
+    if not vid:
+        rows.append(row)
+        return rows
+    for i, existing in enumerate(rows):
+        if norm_text(existing.get("video_id")) == vid:
+            merged = {**existing, **{k: v for k, v in row.items() if v != ""}}
+            rows[i] = merged
+            return rows
+    rows.append(row)
+    return rows
+
+
+def import_csv(path: Path) -> list[dict]:
+    out = []
+    for raw in load_csv(path):
+        out.append(canonicalize(raw))
+    return out
+
+
+def apply_updates(new_rows: list[dict]) -> None:
+    existing = load_csv(ROOT / RES)
+    for row in new_rows:
+        existing = upsert(existing, row)
+    save_csv(ROOT / RES, existing)
+    print(f"updated {RES} ({len(existing)} rows total)")
+
+
+def build_row_from_args(ns: argparse.Namespace) -> dict:
+    mapping = {
+        "date": ns.date,
+        "video_id": ns.video_id,
+        "title": ns.title,
+        "views": ns.views,
+        "likes": ns.likes,
+        "comments": ns.comments,
+        "shares": ns.shares,
+        "saves": ns.saves,
+        "avg_watch_time": ns.avg_watch_time,
+        "full_watch_rate": ns.full_watch_rate,
+        "two_sec_retention": ns.two_sec_retention,
+        "five_sec_retention": ns.five_sec_retention,
+        "retention_notes": ns.retention_notes,
+    }
+    return {k: norm_text(v) for k, v in mapping.items() if v is not None}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Update results.csv with TikTok Studio insights")
+    parser.add_argument("--init", action="store_true", help="Create template and empty results.csv")
+    parser.add_argument("--json", metavar="FILE", help="JSON file (object or list)")
+    parser.add_argument("--import-csv", metavar="FILE", dest="import_csv_path")
+    parser.add_argument("--stdin", action="store_true", help="Read JSON lines from stdin")
+    parser.add_argument("--video-id")
+    parser.add_argument("--date")
+    parser.add_argument("--title")
+    parser.add_argument("--views")
+    parser.add_argument("--likes")
+    parser.add_argument("--comments")
+    parser.add_argument("--shares")
+    parser.add_argument("--saves")
+    parser.add_argument("--avg-watch-time", dest="avg_watch_time")
+    parser.add_argument("--full-watch-rate", dest="full_watch_rate")
+    parser.add_argument("--two-sec-retention", dest="two_sec_retention")
+    parser.add_argument("--five-sec-retention", dest="five_sec_retention")
+    parser.add_argument("--retention-notes", dest="retention_notes")
+    ns = parser.parse_args()
+
+    if ns.init:
+        init_files()
+        return 0
+
+    if not (ROOT / RES).is_file():
+        save_csv(ROOT / RES, [])
+
+    batch: list[dict] = []
+
+    if ns.json:
+        data = json.loads(Path(ns.json).read_text(encoding="utf-8"))
+        if isinstance(data, list):
+            batch.extend(data)
+        else:
+            batch.append(data)
+    elif ns.import_csv_path:
+        batch.extend(import_csv(Path(ns.import_csv_path)))
+    elif ns.stdin:
+        for line in sys.stdin:
+            line = line.strip()
+            if line:
+                batch.append(json.loads(line))
+    elif ns.video_id or ns.title or ns.views:
+        batch.append(build_row_from_args(ns))
+    else:
+        parser.print_help()
+        print("\n例: python update_results.py --video-id 7645... --views 1200 --two-sec-retention 48%")
+        return 1
+
+    try:
+        apply_updates(batch)
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    if "--init" in sys.argv or not os.path.exists(REG):
-        if not os.path.exists(REG):
-            print("registry.csv がありません。")
-            sys.exit(1)
-        init_template()
-        sys.exit(0)
-    if "--merge" in sys.argv and "registry" in sys.argv:
-        merge_registry()
-        sys.exit(0)
-    if "--stdin" in sys.argv:
-        updates = json.load(sys.stdin)
-    elif len(sys.argv) > 1 and not sys.argv[1].startswith("-"):
-        with open(sys.argv[1], encoding="utf-8") as f:
-            updates = json.load(f)
-    else:
-        print(__doc__)
-        sys.exit(1)
-    if isinstance(updates, dict):
-        updates = [updates]
-    apply_metrics(updates)
+    raise SystemExit(main())
