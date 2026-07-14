@@ -3,6 +3,11 @@
 TikTok short clips for SETROUNDLY (live `2026-05-29 SETROUNDLY.mp4`).  
 GitHub: `setroundly/setroundly-clips` — **not iam-pro. 運用はこのリポジトリ一本。**
 
+## TikTok運用ルール
+
+- **運用仕様**: `prompts/setroundly_tiktok_ops_rules.md`（KPI・勝ちパターン・提案禁止）
+- **チャッピー用傾向**: `prompts/chappy_trends_summary.md`
+
 ## Weekly automation (primary)
 
 - **唯一の手順書**: `weekly_growth_prompt.md`（Cloud Automation もこれを読む）
@@ -14,7 +19,7 @@ GitHub: `setroundly/setroundly-clips` — **not iam-pro. 運用はこのリポ�
 - Repo root only. Branch: `main`.
 - Source video: not in Git; set `SETROUNDLY_SRC` or upload on Cloud.
 - `ffmpeg` on PATH after `install` in `.cursor/environment.json`.
-- KPI: full watch rate > 2s reach > saves > comments.
+- KPI: avg watch time > full watch rate > 2s reach > saves > comments > views.
 
 ## Local (Windows)
 
