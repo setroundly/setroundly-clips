@@ -1,0 +1,22 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Lyric,Yu Mincho,72,&H00FFFFFF,&H00FFFFFF,&H00101010,&H64000000,-1,0,0,0,100,100,1,0,1,4,2,2,48,48,280,1
+Style: Hook,Yu Mincho,118,&H00FFFFFF,&H00FFFFFF,&H00101010,&H00000000,-1,0,0,0,100,100,2,0,1,6,4,8,24,24,0,1
+Style: Scrim,Arial,1,&H00000000,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Bug,Yu Mincho,52,&H00FFFFFF,&H00FFFFFF,&H00101010,&H78000000,-1,0,0,0,100,100,1,0,1,2,1,2,56,56,140,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, Effect, Text
+Dialogue: 1,0:00:00.00,0:00:04.20,Scrim,,0,0,,{\p1\an7\pos(0,0)\1c&H000000&\1a&HA0&\bord0\shad0}m 0 0 l 1080 0 1080 520 0 520{\p0}
+Dialogue: 2,0:00:00.00,0:00:04.20,Hook,,0,0,,{\an8\pos(540,220)}最後に残ったものが、\N答えだった
+Dialogue: 0,0:00:04.30,0:00:05.00,Lyric,,0,0,,最後に残った\Nそれが答え
+Dialogue: 0,0:00:05.00,0:00:11.00,Lyric,,0,0,,それでも\N歌い続けてる
+Dialogue: 0,0:00:11.00,0:00:16.00,Lyric,,0,0,,この声が\N答えだった
+Dialogue: 2,0:00:16.00,0:00:17.80,Bug,,0,0,,アンサー / SETROUNDLY
